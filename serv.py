@@ -16,7 +16,7 @@ key_uuid_pairs = load_key_uuid_pairs('keys.json')
 
 lock = threading.Lock()
 
-@app.route('/genotpkey', methods=['GET'])
+@app.route('/genkey', methods=['GET'])
 def genotpkey():
     length = request.args.get('length', type=int, default=32)
     # Calculate the number of keys needed
@@ -29,7 +29,7 @@ def genotpkey():
         selected_pairs = random.sample(list(key_uuid_pairs.items()), num_keys_needed)
         return jsonify(selected_pairs)
 
-@app.route('/getotpkey', methods=['POST'])
+@app.route('/getkey', methods=['POST'])
 def getotpkey():
     data = request.get_json()
     uuids = data.get('uuids', [])
@@ -72,4 +72,4 @@ def getotpkey():
 #         return jsonify({"key": key, "uuid": uuid_value})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80)
