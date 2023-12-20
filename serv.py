@@ -46,30 +46,30 @@ def getotpkey():
     return jsonify(keys)
 
 
-@app.route('/getaeskey', methods=['GET'])
-def getaeskey():
-    input_uuid = request.args.get('uuid')
-    with lock:
-        if input_uuid:
-            for key, uuid_value in list(key_uuid_pairs.items()):
-                if uuid_value == input_uuid:
-                    del key_uuid_pairs[key]
-                    return jsonify({"key": key})
-            return jsonify({"error": "UUID not found"}), 404
-        else:
-            if not key_uuid_pairs:
-                return jsonify({"error": "No more pairs available"}), 404
-            key, uuid_value = random.choice(list(key_uuid_pairs.items()))
-            return jsonify({"key": key, "uuid": uuid_value})
+# @app.route('/getaeskey', methods=['GET'])
+# def getaeskey():
+#     input_uuid = request.args.get('uuid')
+#     with lock:
+#         if input_uuid:
+#             for key, uuid_value in list(key_uuid_pairs.items()):
+#                 if uuid_value == input_uuid:
+#                     del key_uuid_pairs[key]
+#                     return jsonify({"key": key})
+#             return jsonify({"error": "UUID not found"}), 404
+#         else:
+#             if not key_uuid_pairs:
+#                 return jsonify({"error": "No more pairs available"}), 404
+#             key, uuid_value = random.choice(list(key_uuid_pairs.items()))
+#             return jsonify({"key": key, "uuid": uuid_value})
 
-@app.route('/genaeskey', methods=['GET'])
-def genaeskey():
-    with lock:
-        if not key_uuid_pairs:
-            return jsonify({"error": "No more pairs available"}), 404
+# @app.route('/genaeskey', methods=['GET'])
+# def genaeskey():
+#     with lock:
+#         if not key_uuid_pairs:
+#             return jsonify({"error": "No more pairs available"}), 404
         
-        key, uuid_value = random.choice(list(key_uuid_pairs.items()))
-        return jsonify({"key": key, "uuid": uuid_value})
+#         key, uuid_value = random.choice(list(key_uuid_pairs.items()))
+#         return jsonify({"key": key, "uuid": uuid_value})
 
 if __name__ == '__main__':
     app.run(debug=True)
